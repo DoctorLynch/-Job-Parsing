@@ -49,16 +49,3 @@ def sorted_vacancies_by_salary(vacancies_list: list, desired_salary: int) -> lis
             sorted_vacancies.append(vacancy)
 
     return sorted_vacancies
-
-class HHVacancies:
-
-    def __init__(self, title, link, description, salary):
-
-    def __repr__(self):
-        return str
-
-    def __gt__(self, other):
-        pass
-
-    def __lt__(self, other):
-        pass
