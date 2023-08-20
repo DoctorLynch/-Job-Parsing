@@ -11,35 +11,73 @@ class DatabaseConnector:
             with open(self.file_path, 'w') as file:
                 json.dump([], file)
 
-    def insert_data(self, data):
-        with open(self.file_path, 'r') as file:
-            data_dict = json.load(file)
-            new_data_dict = data_dict + data
-        with open(self.file_path, 'w') as file:
-            json.dump(new_data_dict, file, indent=4, ensure_ascii=False)
 
-    #  написать метод для получения данных из джейсон файла по запросу
-    #  метод для удаления данных
+class JsonSaver(DatabaseConnector):
+    def read_data(self):
+        """
+        Читаем
+        """
+        try:
+            with open(self.file_path, 'r') as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            data = []
+        return data
+
+    def write_data(self, data):
+        """
+        Записываем
+        """
+        with open(self.file_path, 'w') as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+
+    # def insert_data(self, data):
+    #     with open(self.file_path, 'r') as file:
+    #         data_dict = json.load(file)
+    #         new_data_dict = data_dict + data
+    #     with open(self.file_path, 'w') as file:
+    #         json.dump(new_data_dict, file, indent=4, ensure_ascii=False)
+
+    def get_job(self, criteria_list):
+        """
+        Поиск вакансий, соответствующих определенным критериям
+        """
+        data = self.read_data()
+
+        criteria_jobs = []
+
+        for job in data:
+            for value in job.values():
+                # проверка, является ли значение строкой и удовлетворяет ли хотя бы одному критерию
+                if any(isinstance(value, str) and criteria.lower() in value.lower() for criteria in criteria_list):
+                    criteria_jobs.append(job)
+                    break
+
+        return criteria_jobs
+
+    def add_job(self, job) -> None:
+        """
+        Добавления новой записи о вакансии
+        """
+        data = self.read_data()
+        new_data = data + job  # преобразование объекта в словарь перед добавлением, используется метод класса Vacancies
+        self.write_data(new_data)
+
+    def remove_job(self, job) -> None:
+        """
+        Удаления записи из списка данных
+        """
+        data = self.read_data()
+        new_data = []
+
+        for item in data:
+            if item != job:
+                new_data.append(item)
+        self.write_data(new_data)
+
+
 
 
 if __name__ == '__main__':
     ins_1 = DatabaseConnector('as.json')
     ins_1.connect_database()
-
-    # def get_job(self, criteria: List) -> list:
-    #     """
-    #     Поиск вакансий, соответствующих определенным критериям
-    #     """
-    #     pass
-    #
-    # def add_job(self, job) -> None:
-    #     """
-    #     Добавление новой записи о вакансии
-    #     """
-    #     pass
-    #
-    # def remove_job(self, job) -> None:
-    #     """
-    #     Удаление записи из списка данных
-    #     """
-    #     pass
