@@ -7,7 +7,7 @@ class HeadHunterAPI(AbstractJobParser):
 
     def __init__(self, keyword):
         self.url = 'https://api.hh.ru/vacancies'
-        self.params: dict = {
+        self.params = {
             'text': keyword,
             'page': 0,
             'per_page': 100,

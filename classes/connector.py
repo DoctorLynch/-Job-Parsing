@@ -11,8 +11,16 @@ class DatabaseConnector:
             with open(self.file_path, 'w') as file:
                 json.dump([], file)
 
+    def insert_data(self, data):
+        with open(self.file_path, 'r') as file:
+            data_dict = json.load(file)
+            new_data_dict = data_dict + data
+        with open(self.file_path, 'w') as file:
+            json.dump(new_data_dict, file, indent=4, ensure_ascii=False)
+
 
 class JsonSaver(DatabaseConnector):
+
     def read_data(self):
         """
         Читаем
@@ -31,13 +39,6 @@ class JsonSaver(DatabaseConnector):
         with open(self.file_path, 'w') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
 
-    # def insert_data(self, data):
-    #     with open(self.file_path, 'r') as file:
-    #         data_dict = json.load(file)
-    #         new_data_dict = data_dict + data
-    #     with open(self.file_path, 'w') as file:
-    #         json.dump(new_data_dict, file, indent=4, ensure_ascii=False)
-
     def get_job(self, criteria_list):
         """
         Поиск вакансий, соответствующих определенным критериям
@@ -55,15 +56,15 @@ class JsonSaver(DatabaseConnector):
 
         return criteria_jobs
 
-    def add_job(self, job) -> None:
+    def add_vacancy(self, vacancy) -> None:
         """
         Добавления новой записи о вакансии
         """
         data = self.read_data()
-        new_data = data + job  # преобразование объекта в словарь перед добавлением, используется метод класса Vacancies
+        new_data = data + vacancy
         self.write_data(new_data)
 
-    def remove_job(self, job) -> None:
+    def remove_vacancy(self, vacancy) -> None:
         """
         Удаления записи из списка данных
         """
@@ -71,13 +72,8 @@ class JsonSaver(DatabaseConnector):
         new_data = []
 
         for item in data:
-            if item != job:
+            if item != vacancy:
                 new_data.append(item)
         self.write_data(new_data)
 
 
-
-
-if __name__ == '__main__':
-    ins_1 = DatabaseConnector('as.json')
-    ins_1.connect_database()

@@ -35,7 +35,6 @@ class Vacancies:
             from_salary = self.salary_data.get('from')
             to_salary = self.salary_data.get('to')
             currency = self.salary_data.get('currency')
-            gross = None
 
             if from_salary and to_salary:
                 formatted_salary_str = f"Зарплата от {from_salary} до {to_salary} {currency}"
