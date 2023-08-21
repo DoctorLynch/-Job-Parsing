@@ -7,7 +7,7 @@ def all_from_hh(search):
     Получение списка вакансий по запросу на HH
     """
     hh_api = HeadHunterAPI(search)
-    vacancies = hh_api.get_request().json()
+    vacancies = hh_api.get_request()
 
     if isinstance(vacancies, str):
         print(vacancies)  # вывод сообщение об ошибке

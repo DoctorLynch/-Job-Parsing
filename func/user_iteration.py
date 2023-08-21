@@ -106,17 +106,16 @@ def process_action(vacancies_list, action, file_name, user_platform):
         print("Ошибка: Введен некорректный номер действия. Пожалуйста, выберите 1, 2, 3, 4, 5 или 6.")
 
 
-def user_interract() -> None:
+def user_iteration():
     """
-    основная функция для взаимодействия с пользователем через командную
-    строку
+    Основная функция
     """
-    print("Вас приветствует программа-парсер вакансий.")
+    print("Вас приветствует Парсер вакансий.")
     user_platform = ""
 
     while user_platform != "3":
 
-        user_platform = input("Выберите платформу для парсинга:\n"
+        user_platform = input("Выберите платформу:\n"
                               "1. HeadHunter.ru\n"
                               "2. SuperJob.ru\n"
                               "3. Выйти из программы\n"

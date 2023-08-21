@@ -15,7 +15,17 @@ class HeadHunterAPI(AbstractJobParser):
         }
 
     def get_request(self) -> Response:
-        return requests.get(self.url, params=self.params)
+        response = requests.get(self.url, params=self.params)
+        if response.status_code == 200:
+            data = response.json()
+            vacancies = data.get('items', [])
+
+            if not vacancies:
+                return "Извините, по вашему поисковому запросу не нашлось вакансий."
+
+            return vacancies
+        else:
+            return "Ошибка {response.status_code}"
 
 
 class SuperJobAPI(AbstractJobParser):
@@ -29,15 +39,6 @@ class SuperJobAPI(AbstractJobParser):
     def get_request(self) -> Response:
         headers = {"X-Api-App-Id": 'v3.r.137751704.ea89fd5b14034fa68ef2b92aa69273ee0982bad8.d6ad7a810e105accdaaf7240e11520b14e148789'}
         return requests.get(self.url, headers=headers, params=self.params)
-
-
-if __name__ == '__main__':
-    # hh_1 = HeadHunterAPI('python')
-    # df = hh_1.get_request()
-    # print(df.json())
-    sj_1 = SuperJobAPI('python')
-    df = sj_1.get_request()
-    print(df.json())
 
 
 
